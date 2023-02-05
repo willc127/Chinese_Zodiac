@@ -1,3 +1,10 @@
+#This script calculates the Chinese Zodiac sign, guardian animals, best friend, worse enemy, and worst animal for a given name and year.
+# The calculation is based on a reference year of 1924 (the year of the Rat). The script uses the "numpy" library to perform the calculation. 
+# The result is displayed in the console and saved in an image format in a folder named after the input name.  
+# The script uses the "Pillow" library to merge and save the images. 
+# The images are merged into one image with the sign and best friend animal in the first row, the guardian animals in the second row,
+# and the worst and worse enemy animals in the third row.
+
 import numpy as np
 from PIL import Image
 import os
@@ -93,3 +100,5 @@ def chinese_zodiac(name, year):
 
 #Call the function
 chinese_zodiac('Karina', 1995) 
+
+
