@@ -1,7 +1,6 @@
 import numpy as np
 from PIL import Image
-from varname import nameof
-
+import os
 
 def chinese_zodiac(name, year):
     # Define the zodiac animals
@@ -31,19 +30,19 @@ def chinese_zodiac(name, year):
     print('Your guardian animals are {} and {}\n'.format(
         guardian_animal1, guardian_animal2))
 
-    # Determine the best friend animal
+    # Determine the index of the best friend animal
     if i <= 6:
         bf = 1-i
     elif i > 6:
         bf = 13-i
-    bff = animal[bf]
-    print('Your best friend animal is {}\n'.format(bff))
+    best = animal[bf]
+    print('Your best friend animal is {}\n'.format(best))
 
     # Determine the worse enemy animal
-    en = i + 6
-    if en >= 12:
-        en = en - 12
-    worse = animal[en]
+    wrs = i + 6
+    if wrs >= 12:
+        wrs = wrs - 12
+    worse = animal[wrs]
     print('Your worse animal is {}\n'.format(worse))
 
     # Determine the worst animal
@@ -56,49 +55,41 @@ def chinese_zodiac(name, year):
 
     if wst >= 12:
         wst = wst - 12
-
     worst = animal[wst]
 
     print('Your worst animal is {}\n'.format(worst))
 
-    # Get the images of the animals
-    label = [sign, guardian_animal1, guardian_animal2, bff, worse, worst]
-    name_label = ['sign', 'guardian_animal1',
-                  'guardian_animal2', 'bff', 'worse', 'worst']
-    img_size = "C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/Rat.jpg"
+    # Create a new folder to store the results
+    results_PATH = 'C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/' + name + '_results/'
+    os.makedirs(results_PATH, exist_ok=True)
+    
+    #Define the labels of each image
+    label = [sign, best,
+                  guardian_animal1, guardian_animal2, worst, worse]
+    name_label = ['sign', 'best',
+                  'guardian_animal1', 'guardian_animal2', 'worst', 'worse']
+    
+    #Define the size of the group images
+    img_size = "C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/Animals/Rat.jpg"
     img_size = Image.open(img_size)
     group_images = Image.new('RGB', (2*img_size.width, 3*img_size.height))
 
+    #Define the position of the group images
     for j in range(0, len(label)):
-        img_dir = "C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/" + \
-            label[j] + ".jpg"
-        img = Image.open(img_dir)
-        img.save('C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/' +
-                 name + '_' + name_label[j] + '.jpg', 'JPEG')
-        if j == 0:
-            group_images.paste(img, (0, 0))
-        elif j == 1:
-            group_images.paste(img, (img.width, 0))
-        elif j == 2:
-            group_images.paste(img, (img.width, img.height))
-        elif j == 3:
-            group_images.paste(img, (0, img.height))
-        elif j == 4:
-            group_images.paste(img, (0, 2*img.height))
-        elif j == 5:
-            group_images.paste(img, (img.width, 2*img.height))
-    group_images.show()
+        img_dir = "C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/Animals/" + \
+            label[j] + ".jpg" #Define the path of the image
+        img = Image.open(img_dir) #Open the image
+        img.save(results_PATH + name + '_' + name_label[j] + '.jpg', 'JPEG') #Save the image
+        
+        # Merge the images together
+        if j < 2:
+            group_images.paste(img, (img.width*j, 0)) # Add the image to the group image (first row)
+        elif j < 4:
+            group_images.paste(img, (img.width*(j-2), img.height)) # Add the image to the group image (second row)
+        elif j < 6:
+            group_images.paste(img, (img.width*(j-4), 2*img.height)) # Add the image to the group image (third row)
+            
+    group_images.save(results_PATH + name + '_results.jpg', 'JPEG') #Save the group image
 
-# Merge the images together
-
-
-"""     group_images.paste(img_sign, (0, 0)) #dog
-    group_images.paste(img_bff, (img_g1.width, 0)) #rabbit
-    group_images.paste(img_g1, (img_g1.width, img_g1.height)) #tiger
-    group_images.paste(img_g2, (0, img_g1.height)) #horse
-    group_images.paste(img_en, (0, 2*img_g1.height)) #dragon
-    group_images.paste(img_wst, (img_g1.width, 2*img_g1.height))
-    group_images.save('C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/' + name + '_results.jpg', 'JPEG')  """
-
-
-chinese_zodiac('Karina', 1995)
+#Call the function
+chinese_zodiac('Karina', 1995) 
