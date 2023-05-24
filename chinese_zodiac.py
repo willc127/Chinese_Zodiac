@@ -1,13 +1,14 @@
-#This script calculates the Chinese Zodiac sign, guardian animals, best friend, worse enemy, and worst animal for a given name and year.
-# The calculation is based on a reference year of 1924 (the year of the Rat). The script uses the "numpy" library to perform the calculation. 
-# The result is displayed in the console and saved in an image format in a folder named after the input name.  
-# The script uses the "Pillow" library to merge and save the images. 
+# This script calculates the Chinese Zodiac sign, guardian animals, best friend, worse enemy, and worst animal for a given name and year.
+# The calculation is based on a reference year of 1924 (the year of the Rat). The script uses the "numpy" library to perform the calculation.
+# The result is displayed in the console and saved in an image format in a folder named after the input name.
+# The script uses the "Pillow" library to merge and save the images.
 # The images are merged into one image with the sign and best friend animal in the first row, the guardian animals in the second row,
 # and the worst and worse enemy animals in the third row.
 
 import numpy as np
 from PIL import Image
 import os
+
 
 def chinese_zodiac(name, year):
     # Define the zodiac animals
@@ -69,36 +70,59 @@ def chinese_zodiac(name, year):
     # Create a new folder to store the results
     results_PATH = 'C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/' + name + '_results/'
     os.makedirs(results_PATH, exist_ok=True)
-    
-    #Define the labels of each image
+
+    # Define the labels of each image
     label = [sign, best,
-                  guardian_animal1, guardian_animal2, worst, worse]
+             guardian_animal1, guardian_animal2, worst, worse]
     name_label = ['sign', 'best',
                   'guardian_animal1', 'guardian_animal2', 'worst', 'worse']
-    
-    #Define the size of the group images
+
+    # Define the size of the group images
     img_size = "C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/Animals/Rat.jpg"
     img_size = Image.open(img_size)
     group_images = Image.new('RGB', (2*img_size.width, 3*img_size.height))
 
-    #Define the position of the group images
+    # Define the position of the group images
     for j in range(0, len(label)):
         img_dir = "C:/Users/willi/OneDrive/Documentos/DataScience/portfolio/Chinese_Zodiac/Animals/" + \
-            label[j] + ".jpg" #Define the path of the image
-        img = Image.open(img_dir) #Open the image
-        img.save(results_PATH + name + '_' + name_label[j] + '.jpg', 'JPEG') #Save the image
-        
+            label[j] + ".jpg"  # Define the path of the image
+        img = Image.open(img_dir)  # Open the image
+        img.save(results_PATH + name + '_' +
+                 name_label[j] + '.jpg', 'JPEG')  # Save the image
+
         # Merge the images together
         if j < 2:
-            group_images.paste(img, (img.width*j, 0)) # Add the image to the group image (first row)
+            # Add the image to the group image (first row)
+            group_images.paste(img, (img.width*j, 0))
         elif j < 4:
-            group_images.paste(img, (img.width*(j-2), img.height)) # Add the image to the group image (second row)
+            # Add the image to the group image (second row)
+            group_images.paste(img, (img.width*(j-2), img.height))
         elif j < 6:
-            group_images.paste(img, (img.width*(j-4), 2*img.height)) # Add the image to the group image (third row)
-            
-    group_images.save(results_PATH + name + '_results.jpg', 'JPEG') #Save the group image
+            # Add the image to the group image (third row)
+            group_images.paste(img, (img.width*(j-4), 2*img.height))
 
-#Call the function
-chinese_zodiac('Karina', 1995) 
+    group_images.save(results_PATH + name + '_results.jpg',
+                      'JPEG')  # Save the group image
 
 
+# Call the function
+chinese_zodiac('Karina', 1995)
+
+# A FAZER
+# Elemento energético
+""" O elemento é determinado de acordo com o último algarismo do ano de nascimento, conforme descrito abaixo:
+
+Metal: 0 e 1
+Água: 2 e 3
+Madeira: 4 e 5
+Fogo: 6 e 7
+Terra: 8 e 9 
+
+Elementos fixos:
+Madeira: Tigre, Coelho e Dragão
+Fogo: Serpente e Cavalo
+Terra: Boi, Cabra e Cão
+Metal: Macaco e Galo
+Água: Rato e Porco
+
+"""
