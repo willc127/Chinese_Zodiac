@@ -53,7 +53,7 @@ calculate_element(year)
 animal_images(name, sign, best_animal, guardian_animals1, guardian_animals2, worst_animal, worse_animal)
 ```
 #### Results:
-![results_will](William_results\William_results.jpg)
+![results_will](William_results/William_results.jpg)
 
 ```bash
 What is your name? William   
